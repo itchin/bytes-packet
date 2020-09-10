@@ -1,8 +1,16 @@
 package bpacket
 
 import (
+    //"fmt"
     "bytes"
     "encoding/binary"
+)
+
+var (
+    // 完整的数据包
+    packet = make([]byte, 0)
+    // 缓存
+    cache = make([]byte, 0)
 )
 
 const (
@@ -16,17 +24,22 @@ func Packet(buf []byte) []byte {
 }
 
 // 解包
-func Unpack(buf []byte) ([]byte, []byte) {
+func Unpack(buf []byte) ([]byte) {
+    buf = append(cache, buf...)
     length := len(buf)
 
     messageLength := bytesToInt(buf[:HEADER_LEN])
+    // 当前数据包的总长度
     total := HEADER_LEN + messageLength
     if length < total {
-        return []byte{}, buf
+        cache = buf
+        return []byte{}
     } else if (length == total) {
-        return buf[HEADER_LEN:], []byte{}
+        cache = []byte{}
+        return buf[HEADER_LEN:]
     } else {
-        return buf[HEADER_LEN:total], buf[total:]
+        cache = buf[total:]
+        return buf[HEADER_LEN:total]
     }
 }
 

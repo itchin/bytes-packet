@@ -25,10 +25,6 @@ func main() {
 }
 
 func run(conn net.Conn) {
-    // 缓存剩余的字节流
-    cache := make([]byte, 0)
-    // 完整的数据包
-    packet := make([]byte, 0)
     // 每次读取的字节流
     buf := make([]byte, 1)
 
@@ -40,7 +36,7 @@ func run(conn net.Conn) {
             break
         }
 
-        packet, cache = bpacket.Unpack(append(cache, buf[:n]...))
+        packet := bpacket.Unpack(buf[:n])
         if len(packet) > 0 {
             fmt.Println(string(packet))
         }
