@@ -1,6 +1,8 @@
-#### 使用
+#### 导入项目
 
-可以使用go mod方式导入到项目中，代码中加入import "github.com/itchin/bytes-packet"，之后使用go mod tidy命令。
+代码头部加入import "github.com/itchin/bytes-packet"，之后使用go mod tidy命令。
+
+#### 使用
 
 ```
 package main
